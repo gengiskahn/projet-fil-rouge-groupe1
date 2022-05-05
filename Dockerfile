@@ -1,10 +1,11 @@
-FROM nginx:1.21.1
-LABEL maintainer="Ulrich MONJI"
+FROM node:14.16
+LABEL maintainer="Fil Rouge Groupe 1"
 RUN apt-get update && \
-    apt-get upgrade -y && \
-    apt-get install -y curl && \
-    apt-get install -y git
-RUN rm -Rf /usr/share/nginx/html/*
-RUN git clone https://github.com/diranetafen/static-website-example.git /usr/share/nginx/html
-COPY nginx.conf /etc/nginx/conf.d/default.conf
-CMD sed -i -e 's/$PORT/'"$PORT"'/g' /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'
+        apt-get upgrade -y && \
+        npm install -g npm && \
+        npm install -g nodemon
+RUN mkdir -p /var/local/node && \
+        cd /var/local/node && \
+        git clone https://github.com/cjoly69/fil-rouge-groupe1.git
+EXPOSE 3000
+CMD cd /var/local/node/fil-rouge-groupe1 && npm start
