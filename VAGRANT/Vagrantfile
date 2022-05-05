@@ -1,0 +1,48 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+  RAM=8148
+  CPUS=2
+  config.vm.define "minikube1" do |minikube1|
+    minikube1.vm.box = "geerlingguy/centos7"
+    minikube1.vm.network "private_network", type: "static", ip: "192.168.100.10"
+    minikube1.vm.hostname = "minikube-staging"
+    minikube1.vm.provider "virtualbox" do |v|
+      v.name = "minikube"
+      v.memory = RAM
+      v.cpus = CPUS
+    end
+    minikube1.vm.provision :shell do |shell|
+      shell.path = "install_minikube.sh"
+    end
+  end
+  config.vm.define "minikube2" do |minikube2|
+    minikube2.vm.box = "geerlingguy/centos7"
+    minikube2.vm.network "private_network", type: "static", ip: "192.168.100.11"
+    minikube2.vm.hostname = "minikube-prod"
+    minikube2.vm.provider "virtualbox" do |v|
+      v.name = "minikube"
+      v.memory = RAM
+      v.cpus = CPUS
+    end
+    minikube2.vm.provision :shell do |shell|
+      shell.path = "install_minikube.sh"
+    end
+  end
+  config.vm.define "Jenkins" do |jenkins|
+    jenkins.vm.box = "geerlingguy/centos7"
+    jenkins.vm.network "private_network", type: "static", ip: "192.168.99.12"
+    jenkins.vm.hostname = "jenkins"
+    jenkins.vm.provider "virtualbox" do |v|
+      v.name = "jenkins"
+      v.memory = RAM
+      v.cpus = CPUS
+    end
+    jenkins.vm.provision :shell do |shell|
+      shell.path = "install_jenkins.sh"
+      shell.args = ["master"]
+    end
+  end
+end
+ 
