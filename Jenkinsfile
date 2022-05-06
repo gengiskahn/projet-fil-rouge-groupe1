@@ -60,7 +60,7 @@ pipeline {
             steps {
                 script {
                     sh '''
-                    curl http://staging | grep -i "contact@eazytraining.fr"
+                    curl http://192.168.100.11 | grep -i "contact@eazytraining.fr"
                 '''
                 }
             }
