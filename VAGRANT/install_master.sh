@@ -8,6 +8,7 @@ yum update -y
 yum -y install epel-release 
 yum install -y sshpass
 yum install -y wget
+yum install -y git
 yum upgrade -y
 
 # install jenkins

@@ -37,7 +37,7 @@ pipeline {
             steps {
                 script {
                     sh '''
-                    ssh jenkins@minikube_staging \
+                    ssh jenkins@staging \
                     "docker run --name $CONTAINER_NAME -d -p 3000:3000 -e PORT=3000 ${ID_DOCKER}/$IMAGE_NAME:$IMAGE_TAG"
                     sleep 5
                  '''
@@ -61,7 +61,7 @@ pipeline {
             steps {
                 script {
                     sh '''
-                    curl http://jenkins | grep -i "contact@eazytraining.fr"
+                    curl http://staging | grep -i "contact@eazytraining.fr"
                 '''
                 }
             }
@@ -72,7 +72,7 @@ pipeline {
             steps {
                 script {
                     sh '''
-                 ssh jenkins@minikube_staging \
+                 ssh jenkins@staging \
                  "docker rm -f $CONTAINER_NAME"
                '''
                 }
@@ -84,7 +84,7 @@ pipeline {
             steps {
                 script {
                     sh '''
-                    ssh jenkins@minikube_prod \
+                    ssh jenkins@production \
                     "docker run --name $CONTAINER_NAME -d -p 3000:3000 -e PORT=3000 ${ID_DOCKER}/$IMAGE_NAME:$IMAGE_TAG"
                     sleep 5
                  '''
