@@ -1,7 +1,6 @@
 FROM node:14.16
 LABEL maintainer="Fil Rouge Groupe 1"
 RUN apt-get update && \
-        apt-get upgrade -y && \
         npm install -g npm && \
         npm install jest --global && \
         npm install -g nodemon        

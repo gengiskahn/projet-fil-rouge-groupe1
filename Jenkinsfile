@@ -50,7 +50,9 @@ pipeline {
                 script {
                     sh '''
                     ssh jenkins@staging \
-                    "docker exec -i $CONTAINER_NAME bash -c 'cd /var/local/node/fil-rouge-groupe1 && npm test'"
+                    docker exec -i fil-rouge-groupe1 bash -c "npm install jest --global" && \
+                    docker exec -i fil-rouge-groupe1 bash -c "npm test" && \
+                    docker exec -i fil-rouge-groupe1 bash -c "cd /var/local/node/fil-rouge-groupe1 && npm test"
          '''
                 }
             }
