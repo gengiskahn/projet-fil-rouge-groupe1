@@ -1,3 +1,8 @@
 .DS_Store
 .vagrant
 Df-depart
+node_modules/*
+node_modules/.package-lock.json
+package-lock.json
+.groovylintrc.json
+workspace.code-workspace
