@@ -49,7 +49,8 @@ pipeline {
             steps {
                 script {
                     sh '''
-                    docker exec -it $CONTAINER_NAME bash -c "cd /var/local/node/fil-rouge-groupe1 && npm test"
+                    ssh jenkins@staging \
+                    "docker exec -it $CONTAINER_NAME bash -c 'cd /var/local/node/fil-rouge-groupe1 && npm test'"
          '''
                 }
             }
