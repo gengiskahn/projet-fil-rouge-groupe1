@@ -1,10 +1,9 @@
-/* groovylint-disable DuplicateStringLiteral, GStringExpressionWithinString */
 pipeline {
     environment {
         ID_DOCKER = 'cjoly69'
         IMAGE_NAME = 'fil-rouge-groupe1'
         IMAGE_TAG = 'v1'
-        CONTAINER_NAME = $IMAGE_NAME
+        CONTAINER_NAME = 'fil-rouge-groupe1'
         DOCKERHUB_PASSWORD = credentials('dockerhubpassword')
     }
     agent none
