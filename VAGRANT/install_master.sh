@@ -29,6 +29,7 @@ systemctl start jenkins
 curl -fsSL https://get.docker.com -o get-docker.sh
 sh get-docker.sh
 usermod -aG docker vagrant
+usermod -aG docker jenkins
 
 # Start Docker
 systemctl enable docker
@@ -49,7 +50,7 @@ echo -e "192.168.100.11 staging" >> /etc/hosts
 echo -e "192.168.100.12 production" >> /etc/hosts
 
 # update user jenkins
-usermod -aG docker jenkins
+
 mkdir /var/lib/jenkins/.ssh
 ssh-keygen -q -f /var/lib/jenkins/.ssh/id_rsa -N ''
 chown -R jenkins: /var/lib/jenkins/.ssh
