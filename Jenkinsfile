@@ -1,6 +1,6 @@
 pipeline {
     environment {
-        ID_DOCKER = 'Gengiskahn'
+        ID_DOCKER = 'gengiskahn'
         IMAGE_NAME = 'fil-rouge-groupe1'
         IMAGE_TAG = 'v1'
         CONTAINER_NAME = 'fil-rouge-groupe1'
