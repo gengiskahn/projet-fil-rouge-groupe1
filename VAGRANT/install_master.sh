@@ -53,7 +53,10 @@ echo -e "192.168.100.12 production" >> /etc/hosts
 
 mkdir /var/lib/jenkins/.ssh
 ssh-keygen -q -f /var/lib/jenkins/.ssh/id_rsa -N ''
+echo 'Host * ' > /var/lib/jenkins/.ssh/config
+echo '    StrictHostKeyChecking no' >> /var/lib/jenkins/.ssh/config
 chown -R jenkins: /var/lib/jenkins/.ssh
+chmod 600 /var/lib/jenkins/.ssh/*
 
 # update ssh for jenkins on remotes
 # Declare function to ensure ssh is ready
