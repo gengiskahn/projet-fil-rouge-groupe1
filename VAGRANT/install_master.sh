@@ -8,6 +8,7 @@ yum update -y
 yum -y install epel-release 
 yum install -y sshpass
 yum install -y wget
+yum install -y git
 yum upgrade -y
 
 # install jenkins
@@ -28,6 +29,7 @@ systemctl start jenkins
 curl -fsSL https://get.docker.com -o get-docker.sh
 sh get-docker.sh
 usermod -aG docker vagrant
+usermod -aG docker jenkins
 
 # Start Docker
 systemctl enable docker
@@ -48,10 +50,13 @@ echo -e "192.168.100.11 staging" >> /etc/hosts
 echo -e "192.168.100.12 production" >> /etc/hosts
 
 # update user jenkins
-usermod -aG docker jenkins
+
 mkdir /var/lib/jenkins/.ssh
 ssh-keygen -q -f /var/lib/jenkins/.ssh/id_rsa -N ''
+echo 'Host * ' > /var/lib/jenkins/.ssh/config
+echo '    StrictHostKeyChecking no' >> /var/lib/jenkins/.ssh/config
 chown -R jenkins: /var/lib/jenkins/.ssh
+chmod 600 /var/lib/jenkins/.ssh/*
 
 # update ssh for jenkins on remotes
 # Declare function to ensure ssh is ready
