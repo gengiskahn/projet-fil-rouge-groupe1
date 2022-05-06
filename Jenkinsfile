@@ -44,7 +44,7 @@ pipeline {
             }
         }
          /*tests untaires installation Jest*/
-        stage('tests fonctions js') {
+        /* stage('tests fonctions js') {
             agent any
             steps {
                 script {
@@ -53,7 +53,7 @@ pipeline {
          '''
                 }
             }
-        }
+        } */
         /*test fonctionnel*/
         stage('Test image') {
             agent any
