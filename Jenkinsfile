@@ -44,16 +44,16 @@ pipeline {
             }
         }
          /*tests untaires installation Jest*/
-        /* stage('tests fonctions js') {
+        stage('tests fonctions js') {
             agent any
             steps {
                 script {
                     sh '''
-                    docker exec -it $CONTAINER_NAME "npm test"
+                    docker exec -it $CONTAINER_NAME bash -c "cd /var/local/node/fil-rouge-groupe1 && npm test"
          '''
                 }
             }
-        } */
+        }
         /*test fonctionnel*/
         stage('Test image') {
             agent any
