@@ -38,7 +38,7 @@ pipeline {
                     sh '''
                     ssh jenkins@staging \
                     "docker run --name $CONTAINER_NAME -d -p 3000:3000 -e PORT=3000 ${ID_DOCKER}/$IMAGE_NAME:$IMAGE_TAG"
-                    sleep 60
+                    sleep 5
                  '''
                 }
             }
