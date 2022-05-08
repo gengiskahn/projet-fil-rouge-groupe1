@@ -1,6 +1,7 @@
 pipeline {
     environment {
-        ID_DOCKER = 'gengiskahn'
+        /* ID_DOCKER = 'gengiskahn' */
+		ID_DOCKER = "jenkins:5000"
         IMAGE_NAME = 'fil-rouge-groupe1'
         IMAGE_TAG = 'v1'
         CONTAINER_NAME = 'fil-rouge-groupe1'
@@ -23,7 +24,7 @@ pipeline {
             steps {
                 script {
                     sh '''
-            echo $DOCKERHUB_PASSWORD | docker login -u $ID_DOCKER --password-stdin
+            # echo $DOCKERHUB_PASSWORD | docker login -u $ID_DOCKER --password-stdin
             docker push ${ID_DOCKER}/$IMAGE_NAME:$IMAGE_TAG
         '''
                 }

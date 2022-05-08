@@ -39,6 +39,12 @@ systemctl start docker
 curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 chmod +x /usr/local/bin/docker-compose
 
+# Install Docker Registry ande UI
+
+docker run -d -p 5000:5000 --name registry registry:2
+docker run -d -p 8081:80 -e REGISTRY_TITLE="Eazytraining Docker Registry" -e REGISTRY_URL="http://192.168.100.10:5000" -e SINGLE_REGISTRY="true" joxit/docker-registry-ui:latest
+
+
 # install ansible
 yum install -y python3
 curl -sS https://bootstrap.pypa.io/pip/3.6/get-pip.py | sudo python3
