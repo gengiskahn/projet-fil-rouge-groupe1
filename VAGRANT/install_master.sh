@@ -45,6 +45,7 @@ curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compo
 chmod +x /usr/local/bin/docker-compose
 
 # Install Docker Registry ande UI
+docker run -d -p 5000:5000 --name registry registry:2 --restart always
 cat <<EOF > docker-compose.yml
 version: "2"
 services:
