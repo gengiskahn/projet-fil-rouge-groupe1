@@ -32,7 +32,7 @@ usermod -aG docker vagrant
 usermod -aG docker jenkins
 cat <<EOF > /etc/docker/daemon.json
 {
-  "insecure-registries" : ["192.168.100.10"]
+  "insecure-registries" : ["192.168.100.10:5000"]
 }
 EOF
 
@@ -45,7 +45,7 @@ curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compo
 chmod +x /usr/local/bin/docker-compose
 
 # Install Docker Registry ande UI
-docker run -d -p 5000:5000 --name registry registry:2 --restart always
+docker run -d --restart always -p 5000:5000 --name registry registry:2
 cat <<EOF > docker-compose.yml
 version: "2"
 services:
