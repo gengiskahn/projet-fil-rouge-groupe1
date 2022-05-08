@@ -37,6 +37,10 @@ pipeline {
             steps {
                 script {
                     sh '''
+					ssh jenkins@staging \
+					"docker rm -f fil-rouge-groupe1"
+					ssh jenkins@staging \
+					"docker image rm jenkins:5000/fil-rouge-groupe1:v1"
                     ssh jenkins@staging \
                     "docker run --name $CONTAINER_NAME -d -p 3000:3000 -e PORT=3000 ${ID_DOCKER}/$IMAGE_NAME:$IMAGE_TAG"
                     sleep 5
@@ -51,7 +55,7 @@ pipeline {
                 script {
                     sh '''
                     ssh jenkins@staging \
-                    "docker exec -it $CONTAINER_NAME bash -c 'cd /var/local/node/projet-fil-rouge-groupe1 && npm test'"
+                    "docker exec $CONTAINER_NAME bash -c 'cd /var/local/node/projet-fil-rouge-groupe1 && npm test'"
          '''
                 }
             }
@@ -85,6 +89,10 @@ pipeline {
             steps {
                 script {
                     sh '''
+					ssh jenkins@production \
+					"docker rm -f fil-rouge-groupe1"
+					ssh jenkins@production \
+					"docker image rm jenkins:5000/fil-rouge-groupe1:v1"
                     ssh jenkins@production \
                     "docker run --name $CONTAINER_NAME -d -p 3000:3000 -e PORT=3000 ${ID_DOCKER}/$IMAGE_NAME:$IMAGE_TAG"
                     sleep 5
