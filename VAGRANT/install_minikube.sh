@@ -19,6 +19,13 @@ systemctl restart sshd
 curl -fsSL https://get.docker.com -o get-docker.sh
 sh get-docker.sh
 usermod -aG docker vagrant
+# allow http connections to registry
+cat <<EOF > /etc/docker/daemon.json
+{
+  "insecure-registries" : ["jenkins:5000"]
+}
+EOF
+
 
 # Start Docker
 systemctl enable docker
