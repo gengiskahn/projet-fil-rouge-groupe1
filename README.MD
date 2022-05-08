@@ -1,5 +1,6 @@
 # eazytraining : création d'une CI/CD pour l'application nodeJS de formation
 
+travail collectif : https://github.com/gengiskahn & Daniel Medou
 [Les attendus](./README_goal.MD)
 
 **1. Récupération du repo de travail et installation**
