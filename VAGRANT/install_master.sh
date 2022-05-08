@@ -30,19 +30,23 @@ curl -fsSL https://get.docker.com -o get-docker.sh
 sh get-docker.sh
 usermod -aG docker vagrant
 usermod -aG docker jenkins
-cat <<EOF > /etc/docker/daemon.json
-{
-  "insecure-registries" : ["192.168.100.10:5000"]
-}
-EOF
 
 # Start Docker
 systemctl enable docker
 systemctl start docker
 
+
 # Install docker-compose
 curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 chmod +x /usr/local/bin/docker-compose
+
+# Enable unsecure connections to the registry
+cat <<EOF > /etc/docker/daemon.json
+{
+  "insecure-registries" : ["192.168.100.10:5000"]
+}
+EOF
+systemctl restart docker
 
 # Install Docker Registry ande UI
 docker run -d --restart always -p 5000:5000 --name registry registry:2

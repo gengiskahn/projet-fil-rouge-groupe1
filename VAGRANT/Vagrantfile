@@ -1,11 +1,16 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
+
+# Enable the experimental disks feature via environment variable, requires Vagrant >=2.2.8.
+ENV["VAGRANT_EXPERIMENTAL"] = "disks"
+
 Vagrant.configure("2") do |config|
   RAM=8148
   CPUS=2
   config.vm.define "staging" do |staging|
     staging.vm.box = "centos/8"
+	staging.vm.disk :disk, size: "100GB", primary: true
     staging.vm.network "private_network", type: "static", ip: "192.168.100.11"
     staging.vm.hostname = "staging"
     staging.vm.provider "virtualbox" do |v|
@@ -19,6 +24,7 @@ Vagrant.configure("2") do |config|
   end
   config.vm.define "production" do |production|
     production.vm.box = "centos/8"
+	production.vm.disk :disk, size: "100GB", primary: true
     production.vm.network "private_network", type: "static", ip: "192.168.100.12"
     production.vm.hostname = "production"
     production.vm.provider "virtualbox" do |v|
@@ -32,6 +38,7 @@ Vagrant.configure("2") do |config|
   end
   config.vm.define "jenkins" do |jenkins|
     jenkins.vm.box = "centos/8"
+	jenkins.vm.disk :disk, size: "100GB", primary: true
     jenkins.vm.network "private_network", type: "static", ip: "192.168.100.10"
     jenkins.vm.hostname = "jenkins"
     jenkins.vm.provider "virtualbox" do |v|

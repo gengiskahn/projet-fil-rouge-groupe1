@@ -19,12 +19,6 @@ systemctl restart sshd
 curl -fsSL https://get.docker.com -o get-docker.sh
 sh get-docker.sh
 usermod -aG docker vagrant
-# allow http connections to registry
-cat <<EOF > /etc/docker/daemon.json
-{
-  "insecure-registries" : ["192.168.100.10"]
-}
-EOF
 
 
 # Start Docker
@@ -37,6 +31,14 @@ usermod -aG docker jenkins
 usermod -aG wheel jenkins
 sudo echo "jenkins        ALL=(ALL)       NOPASSWD: ALL" > /etc/sudoers.d/jenkins
 su jenkins -c "ssh-keygen -q -f ~/.ssh/id_rsa -N ''"
+
+# Enable unsecure connections to the registry
+cat <<EOF > /etc/docker/daemon.json
+{
+  "insecure-registries" : ["192.168.100.10:5000"]
+}
+EOF
+systemctl restart docker
 
 # Enable local dns on each server
 echo -e "192.168.100.10 jenkins" >> /etc/hosts
