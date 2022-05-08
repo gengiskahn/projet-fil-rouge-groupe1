@@ -40,9 +40,40 @@ curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compo
 chmod +x /usr/local/bin/docker-compose
 
 # Install Docker Registry ande UI
-
-docker run -d -p 5000:5000 --name registry registry:2
-docker run -d -p 8081:80 -e REGISTRY_TITLE="Eazytraining Docker Registry" -e REGISTRY_URL="http://192.168.100.10:5000" -e SINGLE_REGISTRY="true" joxit/docker-registry-ui:latest
+cat <<EOF > docker-compose.yml
+version: "2"
+services:
+  registry:
+    image: registry:2
+    environment:
+      - REGISTRY_HTTP_SECRET=o43g2kjgn2iuhv2k4jn2f23f290qfghsdg
+      - REGISTRY_STORAGE_DELETE_ENABLED=
+    volumes:
+      - ./registry-data:/var/lib/registry
+  ui:
+    image: jc21/registry-ui
+    environment:
+      - NODE_ENV=production
+      - REGISTRY_HOST=registry:5000
+      - REGISTRY_SSL=
+      - REGISTRY_DOMAIN=
+      - REGISTRY_STORAGE_DELETE_ENABLED=
+    links:
+      - registry
+    restart: on-failure
+  proxy:
+    image: jc21/registry-ui-proxy
+    ports:
+      - 80:80
+    depends_on:
+      - ui
+      - registry
+    links:
+      - ui
+      - registry
+    restart: on-failure
+EOF
+docker-compose up
 
 
 # install ansible

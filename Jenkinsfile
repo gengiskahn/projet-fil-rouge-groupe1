@@ -1,7 +1,7 @@
 pipeline {
     environment {
         /* ID_DOCKER = 'gengiskahn' */
-		ID_DOCKER = "jenkins:5000"
+		ID_DOCKER = "jenkins"
         IMAGE_NAME = 'fil-rouge-groupe1'
         IMAGE_TAG = 'v1'
         CONTAINER_NAME = 'fil-rouge-groupe1'
