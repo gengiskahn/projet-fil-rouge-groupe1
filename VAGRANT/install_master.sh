@@ -48,34 +48,17 @@ chmod +x /usr/local/bin/docker-compose
 cat <<EOF > docker-compose.yml
 version: "2"
 services:
-  registry:
-    image: registry:2
-    environment:
-      - REGISTRY_HTTP_SECRET=o43g2kjgn2iuhv2k4jn2f23f290qfghsdg
-      - REGISTRY_STORAGE_DELETE_ENABLED=
-    volumes:
-      - ./registry-data:/var/lib/registry
-  ui:
+  app:
     image: jc21/registry-ui
-    environment:
-      - NODE_ENV=production
-      - REGISTRY_HOST=registry:5000
-      - REGISTRY_SSL=
-      - REGISTRY_DOMAIN=
-      - REGISTRY_STORAGE_DELETE_ENABLED=
-    links:
-      - registry
-    restart: on-failure
-  proxy:
-    image: jc21/registry-ui-proxy
     ports:
       - 80:80
-    depends_on:
-      - ui
-      - registry
-    links:
-      - ui
-      - registry
+    environment:
+      - REGISTRY_HOST=192.168.100.10:5000
+      - REGISTRY_SSL=false
+      - REGISTRY_DOMAIN=192.168.100.10:5000
+      - REGISTRY_STORAGE_DELETE_ENABLED=true
+      - REGISTRY_USER=
+      - REGISTRY_PASS=
     restart: on-failure
 EOF
 docker-compose up -d
