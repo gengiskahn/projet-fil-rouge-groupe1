@@ -22,7 +22,7 @@ usermod -aG docker vagrant
 # allow http connections to registry
 cat <<EOF > /etc/docker/daemon.json
 {
-  "insecure-registries" : ["jenkins:5000"]
+  "insecure-registries" : ["192.168.100.10"]
 }
 EOF
 

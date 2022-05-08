@@ -30,6 +30,11 @@ curl -fsSL https://get.docker.com -o get-docker.sh
 sh get-docker.sh
 usermod -aG docker vagrant
 usermod -aG docker jenkins
+cat <<EOF > /etc/docker/daemon.json
+{
+  "insecure-registries" : ["192.168.100.10"]
+}
+EOF
 
 # Start Docker
 systemctl enable docker
@@ -73,7 +78,7 @@ services:
       - registry
     restart: on-failure
 EOF
-docker-compose up
+docker-compose up -d
 
 
 # install ansible
