@@ -5,7 +5,7 @@ pipeline {
         IMAGE_NAME = 'fil-rouge-groupe1'
         IMAGE_TAG = 'v1'
         CONTAINER_NAME = 'fil-rouge-groupe1'
-        DOCKERHUB_PASSWORD = credentials('dockerhubpassword')
+        /* DOCKERHUB_PASSWORD = credentials('dockerhubpassword') */
     }
     agent none
      /*Build image*/
