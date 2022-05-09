@@ -63,6 +63,7 @@ Test de réponse sur l'URL
 ```
 curl http://192.168.100.10:3000/ -I 
 ```
+![curl console](./images/curl.png)
 
 Depuis le navigateur
 
