@@ -36,9 +36,9 @@ pipeline {
                 script {
                     sh '''
 					ssh jenkins@staging \
-					"if [ $(docker ps -a | grep $CONTAINER_NAME) ]; then docker rm -f $CONTAINER_NAME; fi"
+					"if docker ps -a | grep $CONTAINER_NAME; then docker rm -f $CONTAINER_NAME; fi"
 					ssh jenkins@staging \
-					"if [ $(docker images | grep ${ID_DOCKER}/$IMAGE_NAME:$IMAGE_TAG) ]; then docker image rm -f ${ID_DOCKER}/$IMAGE_NAME:$IMAGE_TAG; fi"
+					"if docker images | grep ${ID_DOCKER}/$IMAGE_NAME:$IMAGE_TAG; then docker image rm -f ${ID_DOCKER}/$IMAGE_NAME:$IMAGE_TAG; fi"
                     ssh jenkins@staging \
                     "docker run --name $CONTAINER_NAME -d -p 3000:3000 -e PORT=3000 ${ID_DOCKER}/$IMAGE_NAME:$IMAGE_TAG"
                     sleep 5
@@ -88,9 +88,9 @@ pipeline {
                 script {
                     sh '''
 					ssh jenkins@production \
-					"if [ $(docker ps -a | grep $CONTAINER_NAME) ]; then docker rm -f $CONTAINER_NAME; fi"
+					"if docker ps -a | grep $CONTAINER_NAME; then docker rm -f $CONTAINER_NAME; fi"
 					ssh jenkins@production \
-					"if [ $(docker images | grep ${ID_DOCKER}/$IMAGE_NAME:$IMAGE_TAG) ]; then docker image rm -f ${ID_DOCKER}/$IMAGE_NAME:$IMAGE_TAG; fi"
+					"if docker images | grep ${ID_DOCKER}/$IMAGE_NAME:$IMAGE_TAG; then docker image rm -f ${ID_DOCKER}/$IMAGE_NAME:$IMAGE_TAG; fi"
                     ssh jenkins@production \
                     "docker run --name $CONTAINER_NAME -d -p 3000:3000 -e PORT=3000 ${ID_DOCKER}/$IMAGE_NAME:$IMAGE_TAG"
                     sleep 5
