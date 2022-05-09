@@ -1,9 +1,6 @@
 #!/bin/bash
 
 # update system
-cd /etc/yum.repos.d/
-sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-*
-sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-*
 yum update -y
 yum -y install epel-release 
 yum install -y sshpass
@@ -46,10 +43,13 @@ cat <<EOF > /etc/docker/daemon.json
   "insecure-registries" : ["192.168.100.10:5000"]
 }
 EOF
+
 systemctl restart docker
 
 # Install Docker Registry ande UI
+
 docker run -d --restart always -p 5000:5000 --name registry registry:2
+
 cat <<EOF > docker-compose.yml
 version: "2"
 services:
@@ -66,7 +66,8 @@ services:
       - REGISTRY_PASS=
     restart: on-failure
 EOF
-docker-compose up -d
+
+/usr/local/bin/docker-compose up -d
 
 
 # install ansible
@@ -87,6 +88,7 @@ echo 'Host * ' > /var/lib/jenkins/.ssh/config
 echo '    StrictHostKeyChecking no' >> /var/lib/jenkins/.ssh/config
 chown -R jenkins: /var/lib/jenkins/.ssh
 chmod 600 /var/lib/jenkins/.ssh/*
+systemctl restart jenkins
 
 # update ssh for jenkins on remotes
 # Declare function to ensure ssh is ready

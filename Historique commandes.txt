@@ -12,3 +12,17 @@ Setup Git
   24 git remote -v
 Create Minikube VM via Vagrant
 Create Dockerfile
+
+
+extend partition
+vagrant plugin install vagrant-vbguest
+vagrant up
+vagrant halt
+vagrant up
+on the host:
+sudo cfdisk /dev/sda
+	resize
+	write
+	yes
+	quit
+sudo xfs_growfs /dev/sda1
