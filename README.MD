@@ -30,7 +30,9 @@ Parmi les propositions :
 - Jenkins : automatisation du build / test / deploy 
 Permet la gestion de la CI/CD en un seul fichier [Jenkinsfile](./Jenkinsfile)
 - Minikube : pour une installation facilité de cluster Kubernetes pour la version locale de test
-- Ansible : pour la gestion simplifiée des conteneurs Docker depuis les playbooks et la sécurité (OpenSSH)
+- IHM  registry : [jc21/registry-ui](https://hub.docker.com/r/jc21/registry-ui)
+- Manifest Kubernetes
+- SNYK : scan et vulnérabilité
 
 **4. Infrastructure**
 
