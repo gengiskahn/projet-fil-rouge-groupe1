@@ -2,7 +2,7 @@ pipeline {
     environment {
         /* ID_DOCKER = 'gengiskahn' */
 		ID_DOCKER = "192.168.100.10:5000"
-        IMAGE_NAME = 'fil-rouge-groupe1'
+        IMAGE_NAME = 'projet-fil-rouge-groupe1'
         IMAGE_TAG = 'v1'
         CONTAINER_NAME = 'fil-rouge-groupe1'
         /* DOCKERHUB_PASSWORD = credentials('dockerhubpassword') */
@@ -38,9 +38,9 @@ pipeline {
                 script {
                     sh '''
 					ssh jenkins@staging \
-					"docker rm -f fil-rouge-groupe1"
+					"if [ $(docker ps -a | grep $CONTAINER_NAME) ]; then docker rm -f $CONTAINER_NAME; fi"
 					ssh jenkins@staging \
-					"docker image rm ${ID_DOCKER}/projet-fil-rouge-groupe1:v1"
+					"if [ $(docker images | grep ${ID_DOCKER}/$IMAGE_NAME:$IMAGE_TAG) ]; then docker image rm -f ${ID_DOCKER}/$IMAGE_NAME:$IMAGE_TAG; fi"
                     ssh jenkins@staging \
                     "docker run --name $CONTAINER_NAME -d -p 3000:3000 -e PORT=3000 ${ID_DOCKER}/$IMAGE_NAME:$IMAGE_TAG"
                     sleep 5
