@@ -54,18 +54,6 @@ echo -e "192.168.100.10 jenkins" >> /etc/hosts
 echo -e "192.168.100.11 staging" >> /etc/hosts
 echo -e "192.168.100.12 production" >> /etc/hosts
 
-# Install Minikube
-# sudo cat <<EOF > /etc/yum.repos.d/kubernetes.repo
-# [kubernetes]
-# name=Kubernetes
-# baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
-# enabled=1
-# gpgcheck=1
-# repo_gpgcheck=1
-# gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
-# EOF
-# sudo yum install -y kubectl
-
 yum install bash-completion -y
 echo 'source <(kubectl completion bash)' >> ~vagrant/.bashrc
 echo 'alias k=kubectl' >> ~vagrant/.bashrc
