@@ -7,7 +7,8 @@ metadata:
   namespace: eazytraining
 spec:
   replicas: 3
-  strategy: Recreate
+  strategy: 
+    type: Recreate
   selector:
     matchLabels:
       app: eazytraining

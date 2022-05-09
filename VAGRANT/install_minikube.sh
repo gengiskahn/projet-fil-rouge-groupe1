@@ -19,6 +19,7 @@ sudo chmod +x kubectl
 sudo mv kubectl  /usr/bin/
 sudo echo '1' > /proc/sys/net/bridge/bridge-nf-call-iptables
 sudo systemctl enable docker.service
+su - vagrant -c "minikube start --kubernetes-version=1.20.0 --driver=none"
 
 # allow ssh password
 sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/g' /etc/ssh/sshd_config
