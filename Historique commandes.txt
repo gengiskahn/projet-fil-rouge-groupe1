@@ -1,0 +1,28 @@
+Setup Git
+   1 Set-Location -literalPath 'C:\Users\ib\Desktop\PROJET FIL ROUGE'
+   2 git clone https://github.com/ulrichmonji/Groupe1
+  12 git init
+  15 git remote add repo_perso https://github.com/gengiskahn/projet-fil-rouge-groupe1.git
+  16 git remote -v
+  17 git add .
+  19 git commit -m "first commit"
+  20 git status
+  22 git push repo_perso
+  23 git remote add upstream https://github.com/cjoly69/fil-rouge-groupe1.git
+  24 git remote -v
+Create Minikube VM via Vagrant
+Create Dockerfile
+
+
+extend partition
+vagrant plugin install vagrant-vbguest
+vagrant up
+vagrant halt
+vagrant up
+on the host:
+sudo cfdisk /dev/sda
+	resize
+	write
+	yes
+	quit
+sudo xfs_growfs /dev/sda1
