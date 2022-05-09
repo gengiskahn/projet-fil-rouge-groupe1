@@ -5,7 +5,6 @@ pipeline {
         IMAGE_NAME = 'fil-rouge-groupe1'
         IMAGE_TAG = 'v1'
         CONTAINER_NAME = 'fil-rouge-groupe1'
-        /* DOCKERHUB_PASSWORD = credentials('dockerhubpassword') */
     }
     agent none
      /*Build image*/
@@ -18,29 +17,29 @@ pipeline {
                 }
             }
         }
-        /*push in dockerhub*/
-        stage('Login and Push Image on docker hub') {
+        /*push in local registry*/
+        stage('local registry') {
             agent any
             steps {
                 script {
                     sh '''
-            # echo $DOCKERHUB_PASSWORD | docker login -u $ID_DOCKER --password-stdin
             docker push ${ID_DOCKER}/$IMAGE_NAME:$IMAGE_TAG
         '''
                 }
             }
         }
 
-        /*deploy minikube_staging*/
+        //deploy minikube_staging/
         stage('Run container based on builded image staging') {
             agent any
             steps {
                 script {
                     sh '''
-					ssh jenkins@staging \
-					"docker rm -f fil-rouge-groupe1"
-					ssh jenkins@staging \
-					"docker image rm ${ID_DOCKER}/fil-rouge-groupe1:v1"
+                    ssh jenkins@staging \
+                    "docker rm -f fil-rouge-groupe1"
+                    if [docker ps -a | grep fil-rouge-groupe1] then docker rm -f fil-rouge-groupe1 fi
+                    ssh jenkins@staging \
+                    "docker image rm ${ID_DOCKER}/projet-fil-rouge-groupe1:v1"
                     ssh jenkins@staging \
                     "docker run --name $CONTAINER_NAME -d -p 3000:3000 -e PORT=3000 ${ID_DOCKER}/$IMAGE_NAME:$IMAGE_TAG"
                     sleep 5
@@ -48,7 +47,7 @@ pipeline {
                 }
             }
         }
-         /*tests untaires installation Jest*/
+         /*tests unitaires installation Jest*/
         stage('tests fonctions js') {
             agent any
             steps {

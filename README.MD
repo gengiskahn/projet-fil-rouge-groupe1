@@ -88,11 +88,9 @@ systemctl start docker
 
 Nos 3 machines :
 
-- Un Jenkins avec les outils : Jenkins/ansible/K8S en baremetal
-
-- Une staging 
-
-- Une Prod 
+* Un Jenkins avec les outils : Jenkins/ansible/K8S en baremetal
+* Une staging 
+* Une Prod 
 
 Création d'un pipeline en fonction ( voir [Jenkinsfile](./Jenkinsfile) )
 
@@ -115,4 +113,15 @@ Installation des plugins et création de l'utilisateur principal
 La plateforme est prête pour notre premier job !
 
 ![job_jenkins](./images/jenkins_bienvn.png)
+
+**8. Création d'un pipeline Jenkins**
+
+Le pipeline contient 7 étapes :
+* Build de l'image
+* Recupération de l'image dans le registre local
+* Déploiement de la machine de Staging
+* Test de l'image
+* Test fonctionnel
+* Suppression du conteneur de test
+* Déploiement du conteneur de prod
 
