@@ -19,7 +19,7 @@ pipeline {
             }
         }
         /*push in dockerhub*/
-        stage('Login and Push Image on docker hub') {
+        stage('Push Image on local docker repository') {
             agent any
             steps {
                 script {

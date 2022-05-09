@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: eazytraining
+  labels:
+    app: eazytraining
+  namespace: eazytraining
+spec:
+  replicas: 3
+  strategy: Recreate
+  selector:
+    matchLabels:
+      app: eazytraining
+  template:
+    metadata:
+      labels:
+        app: eazytraining
+    spec:
+      containers:
+        - name: fil-rouge-groupe1
+          image: 192.168.100.10:5000/projet-fil-rouge-groupe1:v1
+		  ports:
+		  - containerPort: 3000
+		    name: eazytraining
