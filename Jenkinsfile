@@ -1,10 +1,11 @@
 pipeline {
     environment {
-        ID_DOCKER = 'cjoly69'
+        /* ID_DOCKER = 'gengiskahn' */
+		ID_DOCKER = "192.168.100.10:5000"
         IMAGE_NAME = 'fil-rouge-groupe1'
         IMAGE_TAG = 'v1'
         CONTAINER_NAME = 'fil-rouge-groupe1'
-        DOCKERHUB_PASSWORD = credentials('dockerhubpassword')
+        /* DOCKERHUB_PASSWORD = credentials('dockerhubpassword') */
     }
     agent none
      /*Build image*/
@@ -23,7 +24,7 @@ pipeline {
             steps {
                 script {
                     sh '''
-            echo $DOCKERHUB_PASSWORD | docker login -u $ID_DOCKER --password-stdin
+            # echo $DOCKERHUB_PASSWORD | docker login -u $ID_DOCKER --password-stdin
             docker push ${ID_DOCKER}/$IMAGE_NAME:$IMAGE_TAG
         '''
                 }
@@ -36,6 +37,10 @@ pipeline {
             steps {
                 script {
                     sh '''
+					ssh jenkins@staging \
+					"docker rm -f fil-rouge-groupe1"
+					ssh jenkins@staging \
+					"docker image rm ${ID_DOCKER}/fil-rouge-groupe1:v1"
                     ssh jenkins@staging \
                     "docker run --name $CONTAINER_NAME -d -p 3000:3000 -e PORT=3000 ${ID_DOCKER}/$IMAGE_NAME:$IMAGE_TAG"
                     sleep 5
@@ -50,9 +55,7 @@ pipeline {
                 script {
                     sh '''
                     ssh jenkins@staging \
-                    docker exec -i fil-rouge-groupe1 bash -c "npm install jest --global" && \
-                    docker exec -i fil-rouge-groupe1 bash -c "npm test" && \
-                    docker exec -i fil-rouge-groupe1 bash -c "cd /var/local/node/fil-rouge-groupe1 && npm test"
+                    "docker exec $CONTAINER_NAME bash -c 'cd /var/local/node/projet-fil-rouge-groupe1 && npm test'"
          '''
                 }
             }
@@ -86,6 +89,10 @@ pipeline {
             steps {
                 script {
                     sh '''
+					ssh jenkins@production \
+					"docker rm -f fil-rouge-groupe1"
+					ssh jenkins@production \
+					"docker image rm ${ID_DOCKER}/fil-rouge-groupe1:v1"
                     ssh jenkins@production \
                     "docker run --name $CONTAINER_NAME -d -p 3000:3000 -e PORT=3000 ${ID_DOCKER}/$IMAGE_NAME:$IMAGE_TAG"
                     sleep 5
