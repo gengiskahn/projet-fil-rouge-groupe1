@@ -5,11 +5,7 @@ Vagrant.configure("2") do |config|
   RAM=8148
   CPUS=2
   config.vm.define "staging" do |staging|
-<<<<<<< HEAD
-    staging.vm.box = "centos/8"
-=======
     staging.vm.box = "geerlingguy/centos7"
->>>>>>> dfc91d65aa87c6299780ff2fd221f69871bcd5c4
     staging.vm.network "private_network", type: "static", ip: "192.168.100.11"
     staging.vm.hostname = "staging"
     staging.vm.provider "virtualbox" do |v|

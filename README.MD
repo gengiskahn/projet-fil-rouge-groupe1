@@ -119,9 +119,15 @@ La plateforme est prête pour notre premier job !
 Le pipeline contient 7 étapes :
 * Build de l'image
 * Recupération de l'image dans le registre local
+![registry](./images/registry.png)
 * Déploiement de la machine de Staging
 * Test de l'image
 * Test fonctionnel
 * Suppression du conteneur de test
 * Déploiement du conteneur de prod
+
+![pipeline](./images/pip_ok.png)
+
+Voir le [Jenkinsfile](./Jenkinsfile)
+
 
