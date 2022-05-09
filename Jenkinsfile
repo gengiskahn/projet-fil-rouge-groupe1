@@ -90,9 +90,9 @@ pipeline {
                 script {
                     sh '''
 					ssh jenkins@production \
-					"docker rm -f fil-rouge-groupe1"
+					"if [ $(docker ps -a | grep $CONTAINER_NAME) ]; then docker rm -f $CONTAINER_NAME; fi"
 					ssh jenkins@production \
-					"docker image rm ${ID_DOCKER}/projet-fil-rouge-groupe1:v1"
+					"if [ $(docker images | grep ${ID_DOCKER}/$IMAGE_NAME:$IMAGE_TAG) ]; then docker image rm -f ${ID_DOCKER}/$IMAGE_NAME:$IMAGE_TAG; fi"
                     ssh jenkins@production \
                     "docker run --name $CONTAINER_NAME -d -p 3000:3000 -e PORT=3000 ${ID_DOCKER}/$IMAGE_NAME:$IMAGE_TAG"
                     sleep 5
