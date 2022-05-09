@@ -17,8 +17,8 @@ spec:
         app: eazytraining
     spec:
       containers:
-        - name: fil-rouge-groupe1
-          image: 192.168.100.10:5000/projet-fil-rouge-groupe1:v1
-		  ports:
-		  - containerPort: 3000
-		    name: eazytraining
+        - image: 192.168.100.10:5000/projet-fil-rouge-groupe1:v1
+          name: fil-rouge-groupe1
+          ports:
+          - containerPort: 3000
+            name: eazytraining

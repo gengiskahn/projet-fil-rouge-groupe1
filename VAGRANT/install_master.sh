@@ -47,8 +47,7 @@ EOF
 systemctl restart docker
 
 # Install Docker Registry ande UI
-
-docker run -d --restart always -p 5000:5000 --name registry registry:2
+docker run -d --restart always -p 5000:5000 -e REGISTRY_STORAGE_DELETE_ENABLED=true --name registry registry:2
 
 cat <<EOF > docker-compose.yml
 version: "2"
