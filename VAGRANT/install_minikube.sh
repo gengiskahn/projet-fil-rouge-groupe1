@@ -19,7 +19,7 @@ chmod +x kubectl
 mv kubectl  /usr/bin/
 echo '1' > /proc/sys/net/bridge/bridge-nf-call-iptables
 systemctl enable docker.service
-su - vagrant -c "minikube start --kubernetes-version=1.20.0 --driver=none"
+su - jenkins -c "minikube start --kubernetes-version=1.20.0 --driver=none"
 
 # allow ssh password
 #sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/g' /etc/ssh/sshd_config
@@ -56,7 +56,7 @@ echo -e "192.168.100.11 staging" >> /etc/hosts
 echo -e "192.168.100.12 production" >> /etc/hosts
 
 yum install bash-completion -y
-echo 'source <(kubectl completion bash)' >> ~vagrant/.bashrc
-echo 'alias k=kubectl' >> ~vagrant/.bashrc
-echo 'complete -F __start_kubectl k' >> ~vagrant/.bashrc
-echo "For this Stack, you will use $(ip -f inet addr show eth1 | sed -En -e 's/.*inet ([0-9.]+).*/\1/p') IP Address"
+echo 'source <(kubectl completion bash)' >> ~jenkins/.bashrc
+echo 'alias k=kubectl' >> ~jenkins/.bashrc
+echo 'complete -F __start_kubectl k' >> ~jenkins/.bashrc
+echo "For this Stack, you will use $(ip -f inet addr show enp0s8 | sed -En -e 's/.*inet ([0-9.]+).*/\1/p') IP Address"
