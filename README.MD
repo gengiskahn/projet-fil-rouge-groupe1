@@ -133,4 +133,24 @@ Le pipeline contient 7 étapes :
 
 Voir le [Jenkinsfile](./Jenkinsfile)
 
+<hr style="border:2px solid gray">
+
+# ****HOW TO****
+Les versions staging et production sont disponibles sur le registry de l'entreprise. Il n'y a plus qu'à lancer la commande
+
+```sh
+docker pull 192.168.100.10:5000/projet-fil-rouge-groupe1:[TAG VERSION]
+docker run [IMAGE ID]
+```
+
+![registry](./images/docker_reg.png)
+
+Pour consommer l'application via le navigateur
+
+```
+http://192.168.100.12:31000/
+```
+Pour l'accès au monitoring http://192.168.100.12:30007
+
+![monitoring](./images/monitoring.png)
 
