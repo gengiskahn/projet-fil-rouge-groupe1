@@ -8,92 +8,103 @@ pipeline {
     agent none
      /*Build image*/
     stages {
-        stage('Build image') {
+        stage('Build staging image') {
             agent any
             steps {
                 script {
-                    sh 'docker build -t ${ID_DOCKER}/$IMAGE_NAME:$IMAGE_TAG .'
+                    sh 'docker build --no-cache -t ${ID_DOCKER}/$IMAGE_NAME:${IMAGE_TAG}_staging .'
                 }
             }
         }
         /*push in dockerhub*/
-        stage('Login and Push Image on docker hub') {
+        stage('Push staging Image on local docker repository') {
             agent any
             steps {
                 script {
                     sh '''
-            # echo $DOCKERHUB_PASSWORD | docker login -u $ID_DOCKER --password-stdin
-            docker push ${ID_DOCKER}/$IMAGE_NAME:$IMAGE_TAG
+            docker push ${ID_DOCKER}/$IMAGE_NAME:${IMAGE_TAG}_staging
         '''
                 }
             }
         }
 
         /*deploy minikube_staging*/
-        stage('Run container based on builded image staging') {
+        stage('Deploy on K8S in staging') {
             agent any
             steps {
                 script {
                     sh '''
+					sed 's/___PLATFORMTAG___/_staging/g' eazytraining-deployment.yml > eazytraining-deployment-staging.yml
+					scp eazytraining-deployment-staging.yml jenkins@staging:.
 					ssh jenkins@staging \
-					"if docker ps -a | grep $CONTAINER_NAME; then docker rm -f $CONTAINER_NAME; fi"
-					ssh jenkins@staging \
-					"if docker images | grep ${ID_DOCKER}/$IMAGE_NAME:$IMAGE_TAG; then docker image rm -f ${ID_DOCKER}/$IMAGE_NAME:$IMAGE_TAG; fi"
+					"if docker images | grep ${ID_DOCKER}/$IMAGE_NAME:${IMAGE_TAG}_staging; then docker image rm -f ${ID_DOCKER}/$IMAGE_NAME:${IMAGE_TAG}_staging; fi"
                     ssh jenkins@staging \
-                    "docker run --name $CONTAINER_NAME -d -p 3000:3000 -e PORT=3000 ${ID_DOCKER}/$IMAGE_NAME:$IMAGE_TAG"
-                    sleep 5
+                    "kubectl apply -f eazytraining-deployment-staging.yml"
+					while [ `ssh jenkins@staging "kubectl get pod -n eazytraining | grep eazytraining | tail -1 | cut -d' ' -f9"` != 'Running' ]; do sleep 5; done
                  '''
                 }
             }
         }
-         /*tests untaires installation Jest*/
-        stage('tests fonctions js') {
+         /*Unit test with Jest on staging*/
+        stage('Unit test with Jest on staging') {
             agent any
             steps {
                 script {
                     sh '''
-                    ssh jenkins@staging \
-                    "docker exec $CONTAINER_NAME bash -c 'cd /var/local/node/projet-fil-rouge-groupe1 && npm test'"
+					CONTAINER=`ssh jenkins@staging "kubectl get pod -n eazytraining | grep eazytraining | tail -1 | cut -d' ' -f1"`
+					ssh jenkins@staging \
+					"kubectl exec $CONTAINER -n eazytraining -- bash -c 'cd /var/local/node/projet-fil-rouge-groupe1 && npm test'"
          '''
                 }
             }
         }
-        /*test fonctionnel*/
-        stage('Test image') {
+        /*Fontional test on staging*/
+        stage('Fonctional test on staging') {
             agent any
             steps {
                 script {
                     sh '''
-                    curl http://staging:3000 | grep -i "contact@eazytraining.fr"
+                    curl http://staging:31000 | grep -i "contact@eazytraining.fr"
                 '''
                 }
             }
         }
+		/*push in dockerhub*/
+        stage('Push production Image on local docker repository') {
+            agent any
+            steps {
+                script {
+                    sh '''
+            docker tag ${ID_DOCKER}/${IMAGE_NAME}:${IMAGE_TAG}_staging ${ID_DOCKER}/$IMAGE_NAME:${IMAGE_TAG}_prod
+			docker push ${ID_DOCKER}/$IMAGE_NAME:${IMAGE_TAG}_prod
+        '''
+                }
+            }
+        }
         /*clean*/
-        stage('Clean Container') {
+        stage('Clean Staging deployment') {
             agent any
             steps {
                 script {
                     sh '''
                  ssh jenkins@staging \
-                 "docker rm -f $CONTAINER_NAME"
+                 "kubectl delete -f eazytraining-deployment-staging.yml"
                '''
                 }
             }
         }
         /*deploy prod*/
-        stage('Run container based on builded image prod') {
+        stage('Deploy on K8S in production') {
             agent any
             steps {
                 script {
                     sh '''
+					sed 's/___PLATFORMTAG___/_prod/g' eazytraining-deployment.yml > eazytraining-deployment-production.yml
+					scp eazytraining-deployment-production.yml jenkins@production:.
 					ssh jenkins@production \
-					"if docker ps -a | grep $CONTAINER_NAME; then docker rm -f $CONTAINER_NAME; fi"
-					ssh jenkins@production \
-					"if docker images | grep ${ID_DOCKER}/$IMAGE_NAME:$IMAGE_TAG; then docker image rm -f ${ID_DOCKER}/$IMAGE_NAME:$IMAGE_TAG; fi"
+					"if docker images | grep ${ID_DOCKER}/$IMAGE_NAME:${IMAGE_TAG}_prod; then docker image rm -f ${ID_DOCKER}/$IMAGE_NAME:${IMAGE_TAG}_prod; fi"
                     ssh jenkins@production \
-                    "docker run --name $CONTAINER_NAME -d -p 3000:3000 -e PORT=3000 ${ID_DOCKER}/$IMAGE_NAME:$IMAGE_TAG"
-                    sleep 5
+                    "kubectl apply -f eazytraining-deployment-production.yml"
                  '''
                 }
             }
