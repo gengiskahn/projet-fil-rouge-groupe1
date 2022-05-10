@@ -100,7 +100,7 @@ pipeline {
                 script {
                     sh '''
 					sed 's/___PLATFORMTAG___/_prod/g' eazytraining-deployment.yml > eazytraining-deployment-production.yml
-					scp jenkins@production eazytraining-deployment-production.yml jenkins@staging:.
+					scp eazytraining-deployment-production.yml jenkins@production:.
 					ssh jenkins@production \
 					"if docker images | grep ${ID_DOCKER}/$IMAGE_NAME:${IMAGE_TAG}_prod; then docker image rm -f ${ID_DOCKER}/$IMAGE_NAME:${IMAGE_TAG}_prod; fi"
                     ssh jenkins@production \
