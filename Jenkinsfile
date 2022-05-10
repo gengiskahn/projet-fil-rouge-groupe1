@@ -40,7 +40,7 @@ pipeline {
 					"if docker images | grep ${ID_DOCKER}/$IMAGE_NAME:${IMAGE_TAG}_staging; then docker image rm -f ${ID_DOCKER}/$IMAGE_NAME:${IMAGE_TAG}_staging; fi"
                     ssh jenkins@staging \
                     "kubectl apply -f eazytraining-deployment-staging.yml"
-                    sleep 5
+					while [ `ssh jenkins@staging "kubectl get pod -n eazytraining | grep eazytraining | tail -1 | cut -d' ' -f9"` != 'Running' ]; do sleep 5; done
                  '''
                 }
             }
@@ -51,7 +51,7 @@ pipeline {
             steps {
                 script {
                     sh '''
-					CONTAINER=`ssh jenkins@staging "kubectl get pod -n eazytraining | grep eazytraining | tail -1 | cut -d' ' -f1"`
+					CONTAINER=`ssh jenkins@staging "kubectl get pod -n eazytraining | grep eazytraining | tail -1 | cut -d' ' -f9"`
 					ssh jenkins@staging \
 					"kubectl exec $CONTAINER -n eazytraining -- bash -c 'cd /var/local/node/projet-fil-rouge-groupe1 && npm test'"
          '''
