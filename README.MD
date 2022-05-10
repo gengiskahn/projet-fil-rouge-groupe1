@@ -90,7 +90,7 @@ systemctl start docker
 
 Nos 3 machines :
 
-* Un Jenkins avec les outils : Jenkins/ansible/K8S en baremetal
+* Un Jenkins
 * Une staging 
 * Une Prod 
 
@@ -129,6 +129,7 @@ Le pipeline contient 7 étapes :
 * Déploiement du conteneur de prod
 
 ![pipeline](./images/pip_ok.png)
+[vidéo du pipeline](./images/TDB_Jenkins.gif)
 
 Voir le [Jenkinsfile](./Jenkinsfile)
 
