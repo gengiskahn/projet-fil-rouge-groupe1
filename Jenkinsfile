@@ -46,13 +46,13 @@ pipeline {
             }
         }
          /*Unit test with Jest on staging*/
-        stage('tests fonctions js') {
+        stage('Unit test with Jest on staging') {
             agent any
             steps {
                 script {
                     sh '''
 					ssh jenkins@staging \
-					"kubectl exec $(kubectl get pod -n eazytraining | grep eazytraining | awk '{print $1}' | tail -1) \
+					"kubectl exec `kubectl get pod -n eazytraining | grep eazytraining | awk '{print $1}' | tail -1` \
 					-n eazytraining -- bash -c 'cd /var/local/node/projet-fil-rouge-groupe1 && npm test'"
          '''
                 }
