@@ -29,7 +29,7 @@ pipeline {
         }
 
         /*deploy minikube_staging*/
-        stage('Run container on K8S based on builded staging image') {
+        stage('Deploy on K8S in staging') {
             agent any
             steps {
                 script {
@@ -59,7 +59,7 @@ pipeline {
             }
         }
         /*Fontional test on staging*/
-        stage('Test image') {
+        stage('Fonctional test on staging') {
             agent any
             steps {
                 script {
@@ -94,7 +94,7 @@ pipeline {
             }
         }
         /*deploy prod*/
-        stage('Run container based on builded image prod') {
+        stage('Deploy on K8S in production') {
             agent any
             steps {
                 script {
