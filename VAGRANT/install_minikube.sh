@@ -30,27 +30,6 @@ su jenkins -c "ssh-keygen -q -f ~/.ssh/id_rsa -N ''"
 systemctl enable docker.service
 su - jenkins -c "minikube start --kubernetes-version=1.20.0 --driver=none"
 
-# allow ssh password
-#sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/g' /etc/ssh/sshd_config
-#systemctl restart sshd
-
-# install docker
-#curl -fsSL https://get.docker.com -o get-docker.sh
-#sh get-docker.sh
-#usermod -aG docker vagrant
-
-
-# Start Docker
-#systemctl enable docker
-#systemctl start docker
-
-# add user jenkins
-useradd jenkins
-usermod -aG docker jenkins
-usermod -aG wheel jenkins
-sudo echo "jenkins        ALL=(ALL)       NOPASSWD: ALL" > /etc/sudoers.d/jenkins
-su jenkins -c "ssh-keygen -q -f ~/.ssh/id_rsa -N ''"
-
 # Enable unsecure connections to the registry
 cat <<EOF > /etc/docker/daemon.json
 {
