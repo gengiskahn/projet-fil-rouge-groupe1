@@ -51,8 +51,9 @@ pipeline {
             steps {
                 script {
                     sh '''
-                    ssh jenkins@staging \
-                    "kubectl exec eazytraining -- bash -c 'cd /var/local/node/projet-fil-rouge-groupe1 && npm test'"
+					ssh jenkins@staging \
+					"kubectl exec $(kubectl get pod -n eazytraining | grep eazytraining | awk '{print $1}' | tail -1) \
+					-n eazytraining -- bash -c 'cd /var/local/node/projet-fil-rouge-groupe1 && npm test'"
          '''
                 }
             }
