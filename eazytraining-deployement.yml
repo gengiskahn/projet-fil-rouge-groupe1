@@ -1,3 +1,35 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: eazytraining
+status:
+  phase: Active
+---
+kind: Service 
+apiVersion: v1 
+metadata:
+  name: eazytraining-nodeport
+  namespace: eazytraining
+spec:
+  # Expose the service on a static port on each node
+  # so that we can access the service from outside the cluster
+  type: NodePort
+
+  # When the node receives a request on the static port (31000)
+  # "select pods with the label 'app' set to 'eazytraining'"
+  # and forward the request to one of them
+  selector:
+    app: eazytraining 
+
+  # Three types of ports for a service
+  # - nodePort: a static port assigned on each the node 
+  # - port: port exposed internally in the cluster 
+  # - targetPort: the container port to send requests to
+  ports:
+    - nodePort: 31000
+      port: 3000
+      targetPort: 3000
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:

@@ -90,19 +90,8 @@ chmod 600 /var/lib/jenkins/.ssh/*
 systemctl restart jenkins
 
 # update ssh for jenkins on remotes
-# Declare function to ensure ssh is ready
-function waitforssh {
-    sshpass -p vagrant ssh -o StrictHostKeyChecking=no vagrant@$1 echo ssh is up on $1
-    while test $? -gt 0
-    do
-        echo -e "SSH server not started on $1 host. Trying again later in 5 seconds..."
-		sleep 5 
-        sshpass -p vagrant ssh -o StrictHostKeyChecking=no vagrant@$1 echo ssh is up on $1
-    done
-}
-#waitforssh staging
+
 cat /var/lib/jenkins/.ssh/id_rsa.pub |  sshpass -p vagrant ssh -o StrictHostKeyChecking=no vagrant@staging  "sudo su -c \"cat >>  ~jenkins/.ssh/authorized_keys\""
-#waitforssh production
 cat /var/lib/jenkins/.ssh/id_rsa.pub |  sshpass -p vagrant ssh -o StrictHostKeyChecking=no vagrant@production  "sudo su -c \"cat >>  ~jenkins/.ssh/authorized_keys\""
 
-#echo "For this Stack, you will use $(ip -f inet addr show eth1 | sed -En -e 's/.*inet ([0-9.]+).*/\1/p') IP Address"
+#echo "For this Stack, you will use $(ip -f inet addr show enp0s8 | sed -En -e 's/.*inet ([0-9.]+).*/\1/p') IP Address"
