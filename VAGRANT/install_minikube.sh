@@ -3,7 +3,7 @@
 # update system
 yum -y update
 yum -y install epel-release
-yum -y install libvirt qemu-kvm virt-install virt-top libguestfs-tools bridge-utils
+yum -y install git libvirt qemu-kvm virt-install virt-top libguestfs-tools bridge-utils
 yum install socat -y
 yum install -y conntrack
 curl -fsSL https://get.docker.com -o get-docker.sh
@@ -19,21 +19,21 @@ chmod +x kubectl
 mv kubectl  /usr/bin/
 echo '1' > /proc/sys/net/bridge/bridge-nf-call-iptables
 systemctl enable docker.service
-minikube start --kubernetes-version=1.20.0 --driver=none
+su - vagrant -c "minikube start --kubernetes-version=1.20.0 --driver=none"
 
 # allow ssh password
-sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/g' /etc/ssh/sshd_config
-systemctl restart sshd
+#sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/g' /etc/ssh/sshd_config
+#systemctl restart sshd
 
 # install docker
-curl -fsSL https://get.docker.com -o get-docker.sh
-sh get-docker.sh
-usermod -aG docker vagrant
+#curl -fsSL https://get.docker.com -o get-docker.sh
+#sh get-docker.sh
+#usermod -aG docker vagrant
 
 
 # Start Docker
-systemctl enable docker
-systemctl start docker
+#systemctl enable docker
+#systemctl start docker
 
 # add user jenkins
 useradd jenkins

@@ -11,20 +11,9 @@ metadata:
   name: eazytraining-nodeport
   namespace: eazytraining
 spec:
-  # Expose the service on a static port on each node
-  # so that we can access the service from outside the cluster
   type: NodePort
-
-  # When the node receives a request on the static port (31000)
-  # "select pods with the label 'app' set to 'eazytraining'"
-  # and forward the request to one of them
   selector:
     app: eazytraining 
-
-  # Three types of ports for a service
-  # - nodePort: a static port assigned on each the node 
-  # - port: port exposed internally in the cluster 
-  # - targetPort: the container port to send requests to
   ports:
     - nodePort: 31000
       port: 3000
@@ -50,7 +39,7 @@ spec:
         app: eazytraining
     spec:
       containers:
-        - image: 192.168.100.10:5000/projet-fil-rouge-groupe1:v1
+        - image: 192.168.100.10:5000/projet-fil-rouge-groupe1:v1___PLATFORMTAG___
           name: fil-rouge-groupe1
           ports:
           - containerPort: 3000
