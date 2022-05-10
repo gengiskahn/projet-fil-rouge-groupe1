@@ -51,9 +51,9 @@ pipeline {
             steps {
                 script {
                     sh '''
+					CONTAINER=`ssh jenkins@staging "kubectl get pod -n eazytraining | grep eazytraining | tail -1 | cut -d' ' -f1"`
 					ssh jenkins@staging \
-					"kubectl exec `kubectl get pod -n eazytraining | grep eazytraining | awk '{print $1}' | tail -1` \
-					-n eazytraining -- bash -c 'cd /var/local/node/projet-fil-rouge-groupe1 && npm test'"
+					"kubectl exec $CONTAINER -n eazytraining -- bash -c 'cd /var/local/node/projet-fil-rouge-groupe1 && npm test'"
          '''
                 }
             }
