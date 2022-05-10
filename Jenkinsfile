@@ -64,12 +64,19 @@ pipeline {
                 script {
                     sh '''
                     curl http://staging:31000 | grep -i "contact@eazytraining.fr"
-					if $? = 0
-					    then 
-						docker tag ${ID_DOCKER}/${IMAGE_NAME}:${IMAGE_TAG}_staging ${ID_DOCKER}/$IMAGE_NAME:${IMAGE_TAG}_PROD
-						docker push ${ID_DOCKER}/$IMAGE_NAME:${IMAGE_TAG}_PROD
-					fi
                 '''
+                }
+            }
+        }
+		/*push in dockerhub*/
+        stage('Push production Image on local docker repository') {
+            agent any
+            steps {
+                script {
+                    sh '''
+            docker tag ${ID_DOCKER}/${IMAGE_NAME}:${IMAGE_TAG}_staging ${ID_DOCKER}/$IMAGE_NAME:${IMAGE_TAG}_PROD
+			docker push ${ID_DOCKER}/$IMAGE_NAME:${IMAGE_TAG}_PROD
+        '''
                 }
             }
         }
