@@ -18,6 +18,15 @@ curl -LO https://storage.googleapis.com/kubernetes-release/release/`curl -s http
 chmod +x kubectl
 mv kubectl  /usr/bin/
 echo '1' > /proc/sys/net/bridge/bridge-nf-call-iptables
+
+# add user jenkins
+useradd jenkins
+usermod -aG docker jenkins
+usermod -aG wheel jenkins
+sudo echo "jenkins        ALL=(ALL)       NOPASSWD: ALL" > /etc/sudoers.d/jenkins
+su jenkins -c "ssh-keygen -q -f ~/.ssh/id_rsa -N ''"
+
+# start minikube with user jenkins
 systemctl enable docker.service
 su - jenkins -c "minikube start --kubernetes-version=1.20.0 --driver=none"
 
