@@ -34,7 +34,7 @@ pipeline {
             steps {
                 script {
                     sh '''
-					sed 's/___PLATFORMTAG___/_STAGING/g' eazytraining-deployment.yml > eazytraining-deployment-staging.yml
+					sed 's/___PLATFORMTAG___/_staging/g' eazytraining-deployment.yml > eazytraining-deployment-staging.yml
 					scp eazytraining-deployment-staging.yml jenkins@staging:.
 					ssh jenkins@staging \
 					"if docker images | grep ${ID_DOCKER}/$IMAGE_NAME:${IMAGE_TAG}_staging; then docker image rm -f ${ID_DOCKER}/$IMAGE_NAME:${IMAGE_TAG}_staging; fi"
@@ -74,8 +74,8 @@ pipeline {
             steps {
                 script {
                     sh '''
-            docker tag ${ID_DOCKER}/${IMAGE_NAME}:${IMAGE_TAG}_staging ${ID_DOCKER}/$IMAGE_NAME:${IMAGE_TAG}_PROD
-			docker push ${ID_DOCKER}/$IMAGE_NAME:${IMAGE_TAG}_PROD
+            docker tag ${ID_DOCKER}/${IMAGE_NAME}:${IMAGE_TAG}_staging ${ID_DOCKER}/$IMAGE_NAME:${IMAGE_TAG}_prod
+			docker push ${ID_DOCKER}/$IMAGE_NAME:${IMAGE_TAG}_prod
         '''
                 }
             }
@@ -98,10 +98,10 @@ pipeline {
             steps {
                 script {
                     sh '''
-					sed 's/___PLATFORMTAG___/_PROD/g' eazytraining-deployment.yml > eazytraining-deployment-production.yml
+					sed 's/___PLATFORMTAG___/_prod/g' eazytraining-deployment.yml > eazytraining-deployment-production.yml
 					scp jenkins@production eazytraining-deployment-production.yml jenkins@staging:.
 					ssh jenkins@production \
-					"if docker images | grep ${ID_DOCKER}/$IMAGE_NAME:${IMAGE_TAG}_PROD; then docker image rm -f ${ID_DOCKER}/$IMAGE_NAME:${IMAGE_TAG}_PROD; fi"
+					"if docker images | grep ${ID_DOCKER}/$IMAGE_NAME:${IMAGE_TAG}_prod; then docker image rm -f ${ID_DOCKER}/$IMAGE_NAME:${IMAGE_TAG}_prod; fi"
                     ssh jenkins@production \
                     "kubectl apply -f eazytraining-deployment-production.yml"
                  '''
