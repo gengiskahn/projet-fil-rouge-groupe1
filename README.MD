@@ -30,7 +30,9 @@ Parmi les propositions :
 - Jenkins : automatisation du build / test / deploy 
 Permet la gestion de la CI/CD en un seul fichier [Jenkinsfile](./Jenkinsfile)
 - Minikube : pour une installation facilité de cluster Kubernetes pour la version locale de test
-- Ansible : pour la gestion simplifiée des conteneurs Docker depuis les playbooks et la sécurité (OpenSSH)
+- IHM  registry : [jc21/registry-ui](https://hub.docker.com/r/jc21/registry-ui)
+- Manifest Kubernetes
+- SNYK : scan et vulnérabilité
 
 **4. Infrastructure**
 
@@ -88,7 +90,7 @@ systemctl start docker
 
 Nos 3 machines :
 
-* Un Jenkins avec les outils : Jenkins/ansible/K8S en baremetal
+* Un Jenkins
 * Une staging 
 * Une Prod 
 
@@ -127,7 +129,28 @@ Le pipeline contient 7 étapes :
 * Déploiement du conteneur de prod
 
 ![pipeline](./images/pip_ok.png)
+[vidéo du pipeline](./images/TDB_Jenkins.gif)
 
 Voir le [Jenkinsfile](./Jenkinsfile)
 
+<hr style="border:2px solid gray">
+
+# ****HOW TO****
+Les versions staging et production sont disponibles sur le registry de l'entreprise. Il n'y a plus qu'à lancer la commande
+
+```sh
+docker pull 192.168.100.10:5000/projet-fil-rouge-groupe1:[TAG VERSION]
+docker run [IMAGE ID]
+```
+
+![registry](./images/docker_reg.png)
+
+Pour consommer l'application via le navigateur
+
+```
+http://192.168.100.12:31000/
+```
+Pour l'accès au monitoring http://192.168.100.12:30007
+
+![monitoring](./images/monitoring.png)
 
